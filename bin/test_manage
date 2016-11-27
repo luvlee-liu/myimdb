@@ -1,0 +1,25 @@
+#!/usr/bin/bash
+echo "#######show movieID=31 info"
+java -classpath .:/usr/local/mysql-connector-java/mysql-connector-java-5.1.18-bin.jar MyMovieDB movie "Mission: Impossible - Ghost Protocol"
+
+echo "#######delete movieID=31, Starin cascade deleted"
+java -classpath .:/usr/local/mysql-connector-java/mysql-connector-java-5.1.18-bin.jar MyMovieDBManage --delete Movies -condition "movieID = 31"
+java -classpath .:/usr/local/mysql-connector-java/mysql-connector-java-5.1.18-bin.jar MyMovieDBManage --show Movies -condition "movieID = 31"
+java -classpath .:/usr/local/mysql-connector-java/mysql-connector-java-5.1.18-bin.jar MyMovieDBManage --show Starin -condition "movieID=31"
+
+echo "#######insert movieID=31 with wrong poster"
+java -classpath .:/usr/local/mysql-connector-java/mysql-connector-java-5.1.18-bin.jar MyMovieDBManage --insert Movies 31,"'Mission: Impossible - Ghost Protocol'","'PG-13'","'Action Thriller'",2011,7.3,22,"./data/1.jpg"
+
+echo "#######insert starin movieID=31"
+java -classpath .:/usr/local/mysql-connector-java/mysql-connector-java-5.1.18-bin.jar MyMovieDBManage --insert Starin 12,31
+java -classpath .:/usr/local/mysql-connector-java/mysql-connector-java-5.1.18-bin.jar MyMovieDBManage --insert Starin 11,31
+java -classpath .:/usr/local/mysql-connector-java/mysql-connector-java-5.1.18-bin.jar MyMovieDBManage --insert Starin 26,31
+java -classpath .:/usr/local/mysql-connector-java/mysql-connector-java-5.1.18-bin.jar MyMovieDBManage --show Starin -condition "movieID=31"
+
+echo "#######check wrong poster of movieID=31 wrong.jpg"
+java -classpath .:/usr/local/mysql-connector-java/mysql-connector-java-5.1.18-bin.jar MyMovieDB movie "Mission: Impossible - Ghost Protocol"
+mv ./Poster_31.jpg ./wrong.jpg
+
+echo "#######update movieID=31 with right poster"
+java -classpath .:/usr/local/mysql-connector-java/mysql-connector-java-5.1.18-bin.jar MyMovieDBManage --update poster "./data/31.jpg" -condition 31
+java -classpath .:/usr/local/mysql-connector-java/mysql-connector-java-5.1.18-bin.jar MyMovieDB movie "Mission: Impossible - Ghost Protocol"
